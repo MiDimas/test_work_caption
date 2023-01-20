@@ -31,6 +31,16 @@
         video.play();
       })
       .catch(function(err) {
+        if (err.name == 'OverconstrainedError'){
+          navigator.mediaDevices.getUserMedia({video: true, audio: false})
+          .then(function(stream) {
+          video.srcObject = stream;
+          video.play();
+          })
+          .catch(e => {
+            console.log("An error occurred: " + e)
+          });
+        }
         console.log("An error occurred: " + err);
       });
   
