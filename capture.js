@@ -18,16 +18,20 @@
     var canvas = null;
     var photo = null;
     var startbutton = null;
+    var logBlock = null;
   
     function startup() {
       video = document.getElementById('video');
       canvas = document.getElementById('canvas');
       photo = document.getElementById('photo');
       startbutton = document.getElementById('startbutton');
+      logBlock = document.getElementById('log');
   
       navigator.mediaDevices.getUserMedia({video: { facingMode: { exact: "environment" } }, audio: false})
       .then(function(stream) {
         video.srcObject = stream;
+        var videoTracks = stream.getVideoTracks();
+        console.log(`Видео устройство: ${videoTracks[0].label}`)
         video.play();
       })
       .catch(function(err) {
@@ -67,6 +71,7 @@
       startbutton.addEventListener('click', function(ev){
         takepicture();
         ev.preventDefault();
+        logBlock.innerHTML = [video.srcObject.active, video.srcObject.id, video.srcObject.getVideoTracks()]
       });
       
       clearphoto();
